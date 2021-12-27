@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NyelvFuggetlen
 {
@@ -6,9 +8,47 @@ namespace NyelvFuggetlen
     {
         static void Main(string[] args)
         {
-            round1();
-
+            //round1();
+            //round2();
             Console.Read();
+        }
+
+        private static void round2()
+        {
+            //task2
+            int code = 130023423;
+
+            for (int i = 0; i < 20; i++)
+            {
+                code = (code - 1) / 2;
+            }
+
+            Console.WriteLine("code: " + code);
+
+
+            //task3
+            List<int> deck = Enumerable.Range(1, 100000).ToList();
+           
+            Console.WriteLine();
+
+            void toTheBack()
+            {
+                deck.Add(deck[0]);
+                deck.RemoveAt(0);
+            }
+            void removeFirst()
+            {
+                deck.RemoveAt(0);
+            }
+
+            while (deck.Count != 1)
+            {
+                toTheBack();
+                removeFirst();
+            }
+
+            Console.WriteLine($"last card: {deck[0]}");
+
         }
 
         private static void round1()
@@ -19,7 +59,7 @@ namespace NyelvFuggetlen
             {
                 sum1 += i;
             }
-            Console.WriteLine("ex1: "+ sum1 );
+            Console.WriteLine("ex1: " + sum1);
 
             //task2
             int n = 123456789;
