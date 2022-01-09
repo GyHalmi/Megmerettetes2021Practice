@@ -15,8 +15,93 @@ namespace Ipar4._0
             //Console.WriteLine("study delegates by select(int.Parse) ");
             //Func<string, int> parser = int.Parse;
 
-            round2();
+            //round2();
+            round3();
             Console.Read();
+        }
+        class intWrapper //: IEquatable<intWrapper>
+        {
+            public int N { get; set; }
+
+            public intWrapper(int n)
+            {
+                N = n;
+            }
+
+            //public static bool operator ==(intWrapper n1, intWrapper n2)
+            //{
+            //    return n1.N == n2.N;
+            //}
+            //public static bool operator !=(intWrapper n1, intWrapper n2)
+            //{
+            //    return n1.N != n2.N;
+            //}
+
+            //quick actions - generate Equals and GetHashCode - implement IEquatable<intWrapper>
+            //public override bool Equals(object obj)
+            //{
+            //    return Equals(obj as intWrapper);
+            //}
+
+            //public bool Equals(intWrapper other)
+            //{
+            //    return other != null &&
+            //           N == other.N;
+            //}
+
+            //public override int GetHashCode()
+            //{
+            //    return HashCode.Combine(N);
+            //}
+        }
+        private static void round3()
+        {
+            //task1
+
+            List<int> numbers = new List<int> { 1, 2, 3, 3, 3, 4 };
+            var result = numbers.Select(n => new intWrapper(n)).Distinct().ToList();
+            //var result = numbers.Select(n => n+1).Distinct().ToList();
+            Console.WriteLine("res.count: " + result.Count());
+
+            var r2 = numbers.Select(n => n * 2).Distinct();
+            Console.WriteLine("r2.count: " + r2.Count());
+            Console.WriteLine("");
+
+            //task2
+            int[] waferSizes = { 1000, 541, 224, 25, 1 };
+
+            int t = 1025;
+            int getTotalWaferCount(int cpuCount)
+            {
+                int waferCount = 0;
+                int sizeInd = 0;
+                while (cpuCount > 0)
+                {
+                    waferCount += cpuCount / waferSizes[sizeInd];
+                    cpuCount %= waferSizes[sizeInd];
+                    sizeInd++;
+                }
+                return waferCount;
+            }
+
+            Console.WriteLine($"wafercount(t): {getTotalWaferCount(t)} \nt= {t}");
+
+            actualFile = @"c:\Users\georg\Documents\codeAfterSoter\Megmerettetes2021 Feladatok\csatolt fajlok\r3\altalanos\3_fordulo_2_feladat.txt";
+            testFile = @"c:\Users\georg\Documents\codeAfterSoter\Megmerettetes2021 Feladatok\csatolt fajlok\r3\altalanos\3_fordulo_2_feladat_test.txt";
+            List<int> cpuRequests = readNumbersFromFile(actualFile);
+
+            int totalWaferCount = 0;
+            //foreach (int req in cpuRequests)
+            //{
+            //    totalWaferCount += getTotalWaferCount(req);
+            //}
+
+            totalWaferCount = cpuRequests.Sum(n => getTotalWaferCount(n));
+
+            Console.WriteLine("totatl wafer count = " + totalWaferCount);
+
+
+
         }
 
         private static void round2()
@@ -60,7 +145,7 @@ namespace Ipar4._0
 
             int chipCountCache(int n)
             {
-                if (n == 0) return 0;  
+                if (n == 0) return 0;
 
                 int[] cache = new int[n + 1];
                 cache[0] = 0;
@@ -80,7 +165,7 @@ namespace Ipar4._0
                 DateTime t1 = DateTime.Now;
                 int result = chipCountRecursive(n);
                 DateTime t2 = DateTime.Now;
-                Console.WriteLine($"chipCountRecursive({n}) = {result},  \t calcTime = {t2-t1}");
+                Console.WriteLine($"chipCountRecursive({n}) = {result},  \t calcTime = {t2 - t1}");
             }
             void logCache(int n)
             {
@@ -96,7 +181,7 @@ namespace Ipar4._0
             int tester = 30;
             logCache(tester);
             logRecursive(tester);
-           
+
         }
 
         private static void round1()

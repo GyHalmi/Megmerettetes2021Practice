@@ -10,9 +10,87 @@ namespace NyelvFuggetlen
         {
             //round1();
             //round2();
+            //round3t2();
+            round3t3(); //not interpretable
             Console.Read();
         }
+        private static void round3t3()
+        {
+            int[][] pyramid = new int[25][];
+                int lastNum = 0;
+            for (int row = 0; row < pyramid.Length; row++)
+            {
+                pyramid[row] = new int[row + 1];
+                for (int i = 0; i < pyramid[row].Length; i++)
+                {
+                    pyramid[row][i] = ++lastNum;
+                }
+            }
+            Console.WriteLine("");
+        }
+        private static void round3t2()
+        {
+            /*
+             * cache miss when block to read is not in cache
+             * cache hit when block to read is in cache
+            */
 
+            int[] cache = { -1, -1, -1 };
+            int cacheMissCount = 0;
+
+            for (int i = 1; i <= 5; i++)
+            {
+                readBlockN((i * 2) % 5);
+                readBlockN(i % 5);
+            }
+
+            Console.WriteLine($"cacheMissCount: {cacheMissCount}");
+
+            void readBlockN(int i)
+            {
+                if (cacheMiss(i))
+                {
+                    cacheMissCount++;
+                    storeNew(i);
+                }
+                else
+                {
+                    storeRearrange(i);
+                }
+            }
+
+            void storeNew(int block)
+            {
+                for (int i = cache.Length - 1; i >= 1; i--)
+                {
+                    cache[i] = cache[i - 1];
+                }
+                cache[0] = block;
+            }
+            void storeRearrange(int block)
+            {
+                int ind = 0;
+                while (ind < cache.Length && cache[ind] != block)
+                {
+                    ind++;
+                }
+                for (int i = ind; i >= 1; i--)
+                {
+                    cache[i] = cache[i - 1];
+                }
+                cache[0] = block;
+            }
+
+            bool cacheMiss(int n)
+            {
+                int i = 0;
+                while (i < cache.Length && cache[i] != n)
+                {
+                    i++;
+                }
+                return i >= cache.Length;
+            }
+        }
         private static void round2()
         {
             //task2
@@ -28,7 +106,7 @@ namespace NyelvFuggetlen
 
             //task3
             List<int> deck = Enumerable.Range(1, 100000).ToList();
-           
+
             Console.WriteLine();
 
             void toTheBack()
@@ -50,7 +128,6 @@ namespace NyelvFuggetlen
             Console.WriteLine($"last card: {deck[0]}");
 
         }
-
         private static void round1()
         {
             //task1
