@@ -16,9 +16,81 @@ namespace Ipar4._0
             //Func<string, int> parser = int.Parse;
 
             //round2();
-            round3();
+            //round3();
+            round4();
+            round4officialSolution();
             Console.Read();
         }
+
+        private static void round4officialSolution()
+        {
+            testFile = @"c:\Users\georg\Documents\codeAfterSoter\Megmerettetes2021 Feladatok\csatolt fajlok\r4\altalanos\4_fordulo_2_feladat_test.txt";
+            actualFile = @"c:\Users\georg\Documents\codeAfterSoter\Megmerettetes2021 Feladatok\csatolt fajlok\r4\altalanos\4_fordulo_2_feladat.txt";
+
+
+            var s = File.ReadAllText(actualFile);
+            Dictionary<string, int> dict = new Dictionary<string, int>();
+            foreach (char c in s)
+            {
+                string key = c.ToString().ToLower();
+                if (!dict.ContainsKey(key))
+                {
+                    dict.Add(key, 0);
+                }
+                if (char.IsUpper(c))
+                {
+                    dict[key]++;
+                }
+                else
+                {
+                    dict[key]--;
+                }
+            }
+
+            List<string> keys = dict.Keys.OrderBy(d => d).ToList();
+            IEnumerable<string> values = keys.Select(k => $"{k}:{dict[k]}");
+
+            Console.WriteLine(string.Join(",",values));
+        }
+
+        private static void round4()
+        {
+            //task1 - heap and stack, memory management
+
+            //task2
+            testFile = @"c:\Users\georg\Documents\codeAfterSoter\Megmerettetes2021 Feladatok\csatolt fajlok\r4\altalanos\4_fordulo_2_feladat_test.txt";
+            actualFile = @"c:\Users\georg\Documents\codeAfterSoter\Megmerettetes2021 Feladatok\csatolt fajlok\r4\altalanos\4_fordulo_2_feladat.txt";
+
+            List<char> testedQuailties = readLettersFromFile(actualFile);
+            SortedDictionary<char, int> evaluation = new SortedDictionary<char, int>();
+
+            int caseToValue(char c)
+            {
+                if (Char.IsUpper(c)) return 1;
+                else return -1;
+            }
+
+            foreach (char c in testedQuailties)
+            {
+                char key = Char.ToLower(c);
+                if (evaluation.ContainsKey(key))
+                {
+                    evaluation[key] += caseToValue(c);
+                }
+                else
+                {
+                    evaluation.Add(key, caseToValue(c));
+                }
+            }
+
+            foreach (var item in evaluation)
+            {
+                Console.Write($"{item.Key}:{item.Value},");
+            }
+            Console.WriteLine();
+
+        }
+
         class intWrapper //: IEquatable<intWrapper>
         {
             public int N { get; set; }
@@ -207,6 +279,11 @@ namespace Ipar4._0
         private static List<int> readNumbersFromFile(string path)
         {
             return File.ReadAllText(path).Split(',').Select(int.Parse).ToList();
+        }
+        
+        private static List<char> readLettersFromFile(string path)
+        {
+            return File.ReadAllText(path).ToList();
         }
 
     }
